@@ -1,0 +1,11 @@
+[
+  {
+    "SKU": "tsi",
+    "name": "Test Item",
+    "price": 0.50,
+    "threeForTwo": false,
+    "bonusItemSku": "vga",
+    "bulkDealAmount": 4,
+    "bulkDealPrice": 0.29
+  }
+]
