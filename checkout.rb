@@ -7,19 +7,16 @@ class Checkout
 
   def initialize(pricing_rules)
     @cart = []
-    begin
-
       file = File.open pricing_rules
       @pricing_rules = JSON.load file
       validate_pricing_rules(@pricing_rules)
-      rescue StandardError => e
-        $stderr.print "something went wrong with loading pricing rules. #{e}"
-    end
-
   end
   
-  def scan(item_SKU)
-    item_data = pricing_rules.find { |item| item["SKU"] == item_SKU}
+  def scan(item_sku)
+    item_data = pricing_rules.find { |item| item["sku"] == item_sku}
+    if item_data.nil?
+      raise "error: no item with the SKU #{item_sku}"
+    end
     scanned_item = InventoryItem.new(item_data)
     @cart.push(scanned_item)
   end
@@ -28,14 +25,14 @@ class Checkout
     total = 0
     discounted_items = []
     @cart.each { |item|
-      unless discounted_items.include?(item.SKU)
+      unless discounted_items.include?(item.sku)
         if item.three_for_two
-          total += calculate_three_for_two(@cart.select {|matchingItem| matchingItem.SKU == item.SKU})
-          discounted_items.push(item.SKU)
+          total += calculate_three_for_two(@cart.select {|matchingItem| matchingItem.sku == item.sku})
+          discounted_items.push(item.sku)
         elsif item.bulk_deal_amount && item.bulk_deal_price
-          total += calculate_bulk_buy(@cart.select {|matchingItem| matchingItem.SKU == item.SKU})
-          discounted_items.push(item.SKU)
-        elsif item.bonus_item_SKU
+          total += calculate_bulk_buy(@cart.select {|matchingItem| matchingItem.sku == item.sku})
+          discounted_items.push(item.sku)
+        elsif item.bonus_item_sku
           total += apply_bundling(item)
         else
           total += item.price
@@ -64,7 +61,7 @@ class Checkout
 
   def apply_bundling(item)
     total = item.price
-    bundled_item = @cart.detect{|matchingItem| matchingItem.SKU == item.bonus_item_SKU && matchingItem.bundled == false}
+    bundled_item = @cart.detect{|matchingItem| matchingItem.sku == item.bonus_item_sku && matchingItem.bundled == false}
     if bundled_item
       total -= bundled_item.price
       bundled_item.bundled = true
@@ -74,7 +71,6 @@ class Checkout
 end
 
 def validate_pricing_rules(pricing_rules)
-
   pricing_rules.select {|item|
     rule_count = 0
     if item["bulkDealAmount"]
@@ -87,7 +83,7 @@ def validate_pricing_rules(pricing_rules)
       rule_count +=1
     end
     if rule_count > 1
-      raise "item with SKU #{item["SKU"]} has multiple discounts applied, this is not supported"
+      raise "item with SKU #{item["sku"]} has multiple discounts applied, this is not supported"
     end
   }
   return true

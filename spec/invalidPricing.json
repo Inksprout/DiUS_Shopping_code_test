@@ -1,6 +1,6 @@
 [
   {
-    "SKU": "tsi",
+    "sku": "tsi",
     "name": "Test Item",
     "price": 0.50,
     "threeForTwo": false,

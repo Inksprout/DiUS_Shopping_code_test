@@ -1,25 +1,25 @@
 [
   {
-    "SKU": "ipd",
+    "sku": "ipd",
     "name": "Super iPad",
     "price": 549.99,
     "bulkDealAmount": 4,
     "bulkDealPrice": 499.99
   },
   {
-    "SKU": "mbp",
+    "sku": "mbp",
     "name": "MacBook Pro",
     "price": 1399.99,
-    "bonusItemSKU": "vga"
+    "bonusItemSku": "vga"
   },
   {
-    "SKU": "atv",
+    "sku": "atv",
     "name": "Apple TV",
     "price": 109.50,
     "threeForTwo": true
   },
   {
-    "SKU": "vga",
+    "sku": "vga",
     "name": "VGA Adapter",
     "price": 30
   }
