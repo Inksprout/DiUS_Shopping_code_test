@@ -1,4 +1,4 @@
-# Dius - Shopping code test
+# DiUS - Shopping code test
 
 ### How to run
 
