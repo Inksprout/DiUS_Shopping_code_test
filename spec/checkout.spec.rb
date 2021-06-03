@@ -22,8 +22,8 @@ describe Checkout do
     checkout = Checkout.new("spec/pricingRules.json")
     it "adds a new item to the cart based on the item SKU" do
       checkout.scan("atv")
-      expect(checkout.cart.length).to eq(1)
-      added_item = checkout.cart[0]
+      expect(checkout.get_cart.length).to eq(1)
+      added_item = checkout.get_cart[0]
       expect(added_item.sku).to eq("atv")
       expect(added_item.name).to eq("Apple TV")
       expect(added_item.price).to eq(109.50)
@@ -40,7 +40,7 @@ describe Checkout do
       checkout.scan("mbp")
       checkout.scan("vga")
       checkout.scan("ipd")
-      expect(checkout.cart.length).to eq(3)
+      expect(checkout.get_cart.length).to eq(3)
       expect(checkout.total).to eq(1949.98)
     end
     context "when there is a 2 for the price of 3 discount" do
@@ -50,7 +50,7 @@ describe Checkout do
         checkout.scan("atv")
         checkout.scan("atv")
         checkout.scan("vga")
-        expect(checkout.cart.length).to eq(4)
+        expect(checkout.get_cart.length).to eq(4)
         expect(checkout.total).to eq(249)
       end
       it "applies the discount for multiple sets of 3" do
@@ -62,7 +62,7 @@ describe Checkout do
         checkout.scan("atv")
         checkout.scan("atv")
         checkout.scan("vga")
-        expect(checkout.cart.length).to eq(7)
+        expect(checkout.get_cart.length).to eq(7)
         expect(checkout.total).to eq(468)
       end
       it "applies the discount correctly when the number of items is not a multiple of 3" do
@@ -72,7 +72,7 @@ describe Checkout do
         checkout.scan("atv")
         checkout.scan("atv")
         checkout.scan("vga")
-        expect(checkout.cart.length).to eq(5)
+        expect(checkout.get_cart.length).to eq(5)
         expect(checkout.total).to eq(358.5)
       end
       it "does not apply the discount if there are fewer than 3 od the discount items" do
@@ -80,7 +80,7 @@ describe Checkout do
         checkout.scan("atv")
         checkout.scan("atv")
         checkout.scan("vga")
-        expect(checkout.cart.length).to eq(3)
+        expect(checkout.get_cart.length).to eq(3)
         expect(checkout.total).to eq(249)
       end
     end
@@ -94,14 +94,14 @@ describe Checkout do
         checkout.scan("ipd")
         checkout.scan("ipd")
         checkout.scan("ipd")
-        expect(checkout.cart.length).to eq(7)
+        expect(checkout.get_cart.length).to eq(7)
         expect(checkout.total).to eq(2718.95)
       end
       it "does not apply bulk discount when minimum number of eligible items is not met" do
         checkout = Checkout.new("spec/pricingRules.json")
         checkout.scan("atv")
         checkout.scan("ipd")
-        expect(checkout.cart.length).to eq(2)
+        expect(checkout.get_cart.length).to eq(2)
         expect(checkout.total).to eq(659.49)
       end
     end
@@ -113,7 +113,7 @@ describe Checkout do
         checkout.scan("ipd")
         checkout.scan("mbp")
         checkout.scan("mbp")
-        expect(checkout.cart.length).to eq(5)
+        expect(checkout.get_cart.length).to eq(5)
         expect(checkout.total).to eq(4749.96)
       end
   
@@ -124,7 +124,7 @@ describe Checkout do
         checkout.scan("vga")
         checkout.scan("vga")
         checkout.scan("ipd")
-        expect(checkout.cart.length).to eq(5)
+        expect(checkout.get_cart.length).to eq(5)
         expect(checkout.total).to eq(2009.98)
       end
     end

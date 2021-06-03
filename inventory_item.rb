@@ -1,7 +1,6 @@
 require 'json'
 
 class InventoryItem
-  attr_accessor :bundled
   attr_reader :name
   attr_reader :sku
   attr_accessor :price
@@ -11,7 +10,6 @@ class InventoryItem
   attr_reader :three_for_two
 
   def initialize(item_data)
-    @bundled = false
     # These variables should always be present in the pricing rules
     @sku = item_data["sku"]
     @price = item_data["price"]
